@@ -64,7 +64,7 @@ exports.login = async (req, res) => {
             },
             (error, token) => {
                 if (error) throw error;
-                res.json({ token, user: user });
+                res.json({ token, email: user.email });
             }
         );
     } catch (error) {
@@ -81,7 +81,7 @@ exports.getUserAuthentic = async (req, res) => {
 
     try {
         const cifrado = jwt.verify(token, process.env.SECRET);
-        const user = await User.findById(cifrado.user.id).select('name email');
+        const user = await User.findById(cifrado.user.id).select('name email register');
         res.send(user);
     } catch (error) {
         res.status(401).json('Token no valido');
